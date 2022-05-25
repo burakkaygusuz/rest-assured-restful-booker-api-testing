@@ -1,0 +1,23 @@
+name: Rest Assured Restful Booker API Testing
+
+on: [ push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: maven:3.8.5-eclipse-temurin-17
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots clean compile
+      - name: Run the tests
+        run: mvn test
