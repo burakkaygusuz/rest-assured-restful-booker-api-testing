@@ -33,3 +33,9 @@ cd rest-assured-restful-booker-api-testing
 ```shell
 mvn clean test
 ```
+
+- Generate the report
+
+```shell
+mvn allure:serve
+```
