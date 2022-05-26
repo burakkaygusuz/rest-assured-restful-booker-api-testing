@@ -17,3 +17,7 @@ bin
 .project
 
 .DS_Store
+
+### Allure ###
+.allure/
+allure-results/
