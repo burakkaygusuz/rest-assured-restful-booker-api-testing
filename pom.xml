@@ -22,7 +22,7 @@
         <maven-surefire-plugin.version>3.0.0-M6</maven-surefire-plugin.version>
         <!--Dependency Versions-->
         <allure.version>2.18.1</allure.version>
-        <assertj-core.version>3.22.0</assertj-core.version>
+        <assertj-core.version>3.23.0</assertj-core.version>
         <datafaker.version>1.4.0</datafaker.version>
         <jackson-databind.version>2.13.3</jackson-databind.version>
         <jackson-dataformat-yaml.version>2.13.3</jackson-dataformat-yaml.version>
