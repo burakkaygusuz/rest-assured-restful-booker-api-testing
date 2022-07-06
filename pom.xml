@@ -26,7 +26,7 @@
         <datafaker.version>1.4.0</datafaker.version>
         <jackson-databind.version>2.13.3</jackson-databind.version>
         <jackson-dataformat-yaml.version>2.13.3</jackson-dataformat-yaml.version>
-        <junit-jupiter.version>5.9.0-M1</junit-jupiter.version>
+        <junit-jupiter.version>5.9.0-RC1</junit-jupiter.version>
         <rest-assured.version>5.1.1</rest-assured.version>
         <junit-platform-launcher.version>1.9.0-M1</junit-platform-launcher.version>
         <aspectj.version>1.9.9.1</aspectj.version>
