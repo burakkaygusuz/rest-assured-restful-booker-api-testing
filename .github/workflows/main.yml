@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: maven:3.8.5-eclipse-temurin-17
+      image: maven:3.8.6-eclipse-temurin-17
 
     steps:
       - uses: actions/checkout@v3
