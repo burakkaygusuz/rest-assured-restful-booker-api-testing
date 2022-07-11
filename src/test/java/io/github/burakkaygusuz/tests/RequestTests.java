@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.burakkaygusuz.objects.Booking;
 import io.github.burakkaygusuz.objects.BookingDates;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Feature("Request Tests")
 @DisplayName("Request Tests")
 @TestMethodOrder(OrderAnnotation.class)
 public class RequestTests extends BaseTest {
@@ -29,6 +33,8 @@ public class RequestTests extends BaseTest {
     @Test
     @Order(1)
     @DisplayName("Create a new booking")
+    @Description("Test Description: Creates a new booking in the API")
+    @Story("Create Booking")
     void createNewBooking() {
         Booking booking = new Booking(
                 "John",
@@ -56,6 +62,8 @@ public class RequestTests extends BaseTest {
     @Test
     @Order(2)
     @DisplayName("Update the created booking")
+    @Description("Test Description: Updates a current booking")
+    @Story("Update Booking")
     void updateCreatedBooking() {
         Booking booking = new Booking(
                 faker.name().firstName(),
@@ -89,6 +97,8 @@ public class RequestTests extends BaseTest {
     @Test
     @Order(3)
     @DisplayName("Update partially the updated booking")
+    @Description("Test Description: Updates a current booking with a partial payload")
+    @Story("Update Booking")
     void updatePartiallyTheUpdatedBooking() {
         final ObjectNode node = JsonNodeFactory.instance.objectNode();
         node.put("firstname", randomFirstName);
@@ -113,6 +123,8 @@ public class RequestTests extends BaseTest {
     @Test
     @Order(4)
     @DisplayName("Get booking by id")
+    @Description("Test Description: Returns a specific booking based upon the booking id provided")
+    @Story("Get Booking")
     void getBookingById() {
         Response response = given()
                 .spec(requestSpecification)
@@ -129,6 +141,8 @@ public class RequestTests extends BaseTest {
     @Test
     @Order(5)
     @DisplayName("Get booking by first name and last name")
+    @Description("Test Description: Returns a specific booking based upon the booking firstname and lastname provided")
+    @Story("Get Booking")
     void getBookingByFirstNameAndLastName() {
         Response response = given()
                 .spec(requestSpecification)
@@ -147,6 +161,9 @@ public class RequestTests extends BaseTest {
     @Test
     @Order(6)
     @DisplayName("Delete booking by id")
+    @Description("Test Description: Returns the ids of all the bookings that exist within the API. " +
+            "Can take optional query strings to search and return a subset of booking ids")
+    @Story("Delete Booking")
     void deleteBookingById() {
         Response response = given()
                 .spec(requestSpecification)

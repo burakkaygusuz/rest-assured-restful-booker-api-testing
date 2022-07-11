@@ -3,6 +3,8 @@ package io.github.burakkaygusuz.tests;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.burakkaygusuz.utils.PropertyUtils;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.LogConfig;
@@ -19,6 +21,7 @@ import java.util.Properties;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Epic("Restful-Booker API Test Suite")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BaseTest {
 
@@ -42,6 +45,7 @@ public class BaseTest {
 
     @BeforeAll
     @DisplayName("Health Check")
+    @Description("A simple health check endpoint to confirm whether the API is up and running")
     void healthCheck() {
         Response response = given()
                 .spec(requestSpecification)
@@ -57,6 +61,7 @@ public class BaseTest {
 
     @BeforeEach
     @DisplayName("Create a new token")
+    @Description("Creates a new auth token to use for access to the PUT and DELETE /booking")
     void createToken() {
         String username = props.getProperty("username");
         String password = props.getProperty("password");
