@@ -121,7 +121,9 @@ public class RequestTests extends BaseTest {
                 .then()
                 .extract().response();
 
-        assertThat(response.statusCode()).as("Status Code").isEqualTo(200);
+        assertThat(response.statusCode())
+                .as("Status Code")
+                .isEqualTo(200);
     }
 
     @Test
@@ -137,7 +139,9 @@ public class RequestTests extends BaseTest {
                 .then()
                 .extract().response();
 
-        assertThat(response.statusCode()).as("Status Code").isEqualTo(200);
+        assertThat(response.statusCode())
+                .as("Status Code")
+                .isEqualTo(200);
     }
 
     @Test
@@ -153,6 +157,8 @@ public class RequestTests extends BaseTest {
                 .then()
                 .extract().response();
 
-        assertThat(response.statusCode()).as("Status Code").isEqualTo(201);
+        assertThat(response.statusCode())
+                .as("Status Code")
+                .isEqualTo(201);
     }
 }

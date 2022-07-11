@@ -25,7 +25,6 @@ public class BaseTest {
     protected final Properties props = PropertyUtils.getInstance().loadProperties("app.properties");
     protected final RequestSpecification requestSpecification;
     protected final SoftAssertions softly = new SoftAssertions();
-
     protected String token;
 
     public BaseTest() {
@@ -52,7 +51,7 @@ public class BaseTest {
                 .extract().response();
 
         assertThat(response.statusCode())
-                .as("Healthcheck status")
+                .as("Health check status")
                 .isEqualTo(201);
     }
 
@@ -74,7 +73,9 @@ public class BaseTest {
                 .statusCode(200)
                 .extract().path("token");
 
-        assertThat(token).as("token").isNotEmpty();
+        assertThat(token)
+                .as("token")
+                .isNotEmpty();
     }
 
     @AfterEach
