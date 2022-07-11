@@ -2,6 +2,7 @@ package io.github.burakkaygusuz.tests;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.github.burakkaygusuz.utils.PropertyUtils;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.LogConfig;
@@ -13,12 +14,15 @@ import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
 
+import java.util.Properties;
+
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BaseTest {
 
+    protected final Properties props = PropertyUtils.getInstance().loadProperties("app.properties");
     protected final RequestSpecification requestSpecification;
     protected final SoftAssertions softly = new SoftAssertions();
 
@@ -27,9 +31,10 @@ public class BaseTest {
     public BaseTest() {
         LogConfig logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
         RestAssuredConfig config = RestAssuredConfig.config().logConfig(logConfig);
+        String uri = props.getProperty("uri");
 
         this.requestSpecification = new RequestSpecBuilder()
-                .setBaseUri("https://restful-booker.herokuapp.com")
+                .setBaseUri(uri)
                 .setContentType(ContentType.JSON)
                 .setRelaxedHTTPSValidation()
                 .setConfig(config)
@@ -54,9 +59,11 @@ public class BaseTest {
     @BeforeEach
     @DisplayName("Create a new token")
     void createToken() {
+        String username = props.getProperty("username");
+        String password = props.getProperty("password");
         final ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
-        objectNode.put("username", "admin")
-                .put("password", "password123");
+        objectNode.put("username", username)
+                .put("password", password);
 
         token = given()
                 .spec(requestSpecification)
