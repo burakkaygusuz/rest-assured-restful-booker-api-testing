@@ -21,7 +21,7 @@
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
         <!--Dependency Versions-->
-        <allure.version>2.18.1</allure.version>
+        <allure.version>2.19.0</allure.version>
         <assertj-core.version>3.23.1</assertj-core.version>
         <datafaker.version>1.5.0</datafaker.version>
         <jackson-databind.version>2.13.3</jackson-databind.version>
