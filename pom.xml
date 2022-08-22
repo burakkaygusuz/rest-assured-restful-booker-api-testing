@@ -29,7 +29,7 @@
         <junit-jupiter.version>5.9.0</junit-jupiter.version>
         <rest-assured.version>5.1.1</rest-assured.version>
         <aspectj.version>1.9.9.1</aspectj.version>
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.0</slf4j.version>
     </properties>
 
     <dependencies>
