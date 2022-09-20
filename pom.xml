@@ -20,6 +20,7 @@
         <allure-maven.version>2.11.2</allure-maven.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <maven-surefire-junit5-tree-reporter.version>1.1.0</maven-surefire-junit5-tree-reporter.version>
         <!--Dependency Versions-->
         <allure.version>2.19.0</allure.version>
         <assertj-core.version>3.23.1</assertj-core.version>
@@ -104,6 +105,13 @@
                             <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
                             <listener>io.qameta.allure.junit5.AllureJunit5</listener>
                         </systemPropertyVariables>
+                        <reportFormat>plain</reportFormat>
+                        <consoleOutputReporter>
+                            <disable>true</disable>
+                        </consoleOutputReporter>
+                        <statelessTestsetInfoReporter
+                                implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
+                        </statelessTestsetInfoReporter>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -115,6 +123,11 @@
                             <groupId>org.junit.jupiter</groupId>
                             <artifactId>junit-jupiter-engine</artifactId>
                             <version>${junit-jupiter.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>me.fabriciorby</groupId>
+                            <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
+                            <version>${maven-surefire-junit5-tree-reporter.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>
