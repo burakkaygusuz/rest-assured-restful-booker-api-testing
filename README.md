@@ -6,13 +6,13 @@
 
 ## Prerequisites
 
-Make sure you have installed and be configured the environment variables all the following prerequisites on your
+Make sure you have installed and configured the environment variables all the following prerequisites on your
 development machine:
 
-| OS      | JDK                                | Gradle                |
-|---------|------------------------------------|-----------------------|
-| Windows | `scoop install java/temurin17-jdk` | `scoop install maven` |
-| macOS   | `brew install --cask temurin`      | `brew install maven`  |
+| OS      | JDK                                  | Gradle                |
+|---------|--------------------------------------|-----------------------|
+| Windows | `scoop install java/temurin-lts-jdk` | `scoop install maven` |
+| macOS   | `brew install --cask temurin`        | `brew install maven`  |
 
 ## Executing the Tests
 
