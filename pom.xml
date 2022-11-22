@@ -26,7 +26,7 @@
         <assertj-core.version>3.23.1</assertj-core.version>
         <datafaker.version>1.6.0</datafaker.version>
         <jackson-databind.version>2.14.1</jackson-databind.version>
-        <jackson-dataformat-yaml.version>2.14.0</jackson-dataformat-yaml.version>
+        <jackson-dataformat-yaml.version>2.14.1</jackson-dataformat-yaml.version>
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <rest-assured.version>5.3.0</rest-assured.version>
         <aspectj.version>1.9.9.1</aspectj.version>
