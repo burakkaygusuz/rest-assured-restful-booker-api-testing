@@ -13,7 +13,6 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
 
 import java.util.Properties;
@@ -27,7 +26,6 @@ public class BaseTest {
 
     protected final Properties props = PropertyUtils.getInstance().loadProperties("app.properties");
     protected final RequestSpecification requestSpecification;
-    protected final SoftAssertions softly = new SoftAssertions();
     protected String token;
 
     public BaseTest() {

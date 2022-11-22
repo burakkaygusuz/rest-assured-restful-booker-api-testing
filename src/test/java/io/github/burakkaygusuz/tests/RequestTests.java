@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @Feature("Request Tests")
 @DisplayName("Request Tests")
@@ -54,9 +55,10 @@ public class RequestTests extends BaseTest {
 
         bookingId = response.path("bookingid");
 
-        softly.assertThat(response.statusCode()).isEqualTo(200);
-        softly.assertThat(bookingId).isNotNull();
-        softly.assertAll();
+        assertSoftly(soft -> {
+            soft.assertThat(response.statusCode()).isEqualTo(200);
+            soft.assertThat(bookingId).isNotNull();
+        });
     }
 
     @Test
@@ -84,14 +86,14 @@ public class RequestTests extends BaseTest {
                 .then()
                 .extract().response();
 
-        softly.assertThat(response.statusCode()).as("Status Code").isEqualTo(200);
-        softly.assertThat(response.jsonPath().getString("firstname")).isEqualTo(booking.firstName());
-        softly.assertThat(response.jsonPath().getString("lastname")).isEqualTo(booking.lastName());
-        softly.assertThat(response.jsonPath().getInt("totalprice")).isEqualTo(booking.totalPrice());
-        softly.assertThat(response.jsonPath().getBoolean("depositpaid")).isEqualTo(booking.depositPaid());
-        softly.assertThat(response.jsonPath().getString("additionalneeds"))
-                .isEqualTo(booking.additionalNeeds());
-        softly.assertAll();
+        assertSoftly(soft -> {
+            soft.assertThat(response.statusCode()).as("Status Code").isEqualTo(200);
+            soft.assertThat(response.jsonPath().getString("firstname")).isEqualTo(booking.firstName());
+            soft.assertThat(response.jsonPath().getString("lastname")).isEqualTo(booking.lastName());
+            soft.assertThat(response.jsonPath().getInt("totalprice")).isEqualTo(booking.totalPrice());
+            soft.assertThat(response.jsonPath().getBoolean("depositpaid")).isEqualTo(booking.depositPaid());
+            soft.assertThat(response.jsonPath().getString("additionalneeds")).isEqualTo(booking.additionalNeeds());
+        });
     }
 
     @Test
@@ -114,10 +116,11 @@ public class RequestTests extends BaseTest {
                 .then()
                 .extract().response();
 
-        softly.assertThat(response.statusCode()).as("Status Code").isEqualTo(200);
-        softly.assertThat(response.jsonPath().getString("firstname")).isEqualTo(node.get("firstname").asText());
-        softly.assertThat(response.jsonPath().getString("lastname")).isEqualTo(node.get("lastname").asText());
-        softly.assertAll();
+        assertSoftly(soft -> {
+            soft.assertThat(response.statusCode()).as("Status Code").isEqualTo(200);
+            soft.assertThat(response.jsonPath().getString("firstname")).isEqualTo(node.get("firstname").asText());
+            soft.assertThat(response.jsonPath().getString("lastname")).isEqualTo(node.get("lastname").asText());
+        });
     }
 
     @Test
@@ -133,9 +136,11 @@ public class RequestTests extends BaseTest {
                 .then()
                 .extract().response();
 
-        assertThat(response.statusCode())
-                .as("Status Code")
-                .isEqualTo(200);
+        assertSoftly(soft -> {
+            soft.assertThat(response.statusCode()).as("Status Code").isEqualTo(200);
+            soft.assertThat(response.jsonPath().getString("firstname")).isEqualTo(randomFirstName);
+            soft.assertThat(response.jsonPath().getString("lastname")).isEqualTo(randomLastName);
+        });
     }
 
     @Test
