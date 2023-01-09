@@ -23,7 +23,7 @@
         <maven-surefire-junit5-tree-reporter.version>1.1.0</maven-surefire-junit5-tree-reporter.version>
         <!--Dependency Versions-->
         <allure.version>2.20.1</allure.version>
-        <assertj-core.version>3.24.0</assertj-core.version>
+        <assertj-core.version>3.24.1</assertj-core.version>
         <datafaker.version>1.7.0</datafaker.version>
         <jackson-databind.version>2.14.1</jackson-databind.version>
         <jackson-dataformat-yaml.version>2.14.1</jackson-dataformat-yaml.version>
