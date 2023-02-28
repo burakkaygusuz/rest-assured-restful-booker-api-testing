@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
@@ -154,13 +155,16 @@ public class RequestTests extends BaseTest {
                 .queryParam("firstname", randomFirstName)
                 .queryParam("lastname", randomLastName)
                 .when()
-                .get("/booking/" + bookingId)
+                .get("/booking")
                 .then()
                 .extract().response();
 
-        assertThat(response.statusCode())
-                .as("Status Code")
-                .isEqualTo(200);
+        List<Integer> bookingIds = response.jsonPath().getList("bookingid");
+
+        assertSoftly(soft -> {
+            soft.assertThat(response.statusCode()).as("Status Code").isEqualTo(200);
+            soft.assertThat(bookingIds).contains(bookingId);
+        });
     }
 
     @Test
