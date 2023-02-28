@@ -1,12 +1,16 @@
 name: Rest Assured Restful Booker API Testing
 
-on: [ push ]
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: maven:3.8.6-eclipse-temurin-17
+      image: maven:3.9.0-eclipse-temurin-17
 
     steps:
       - uses: actions/checkout@v3
