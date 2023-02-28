@@ -78,7 +78,8 @@ public class BaseTest {
 
         assertThat(token)
                 .as("token")
-                .isNotEmpty();
+                .isNotEmpty()
+                .isInstanceOf(String.class);
     }
 
     @AfterEach
