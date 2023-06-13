@@ -31,13 +31,13 @@ public class BaseTest {
     public BaseTest() {
         LogConfig logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
         RestAssuredConfig config = RestAssuredConfig.config().logConfig(logConfig);
+        RestAssured.config = config;
         String uri = props.getProperty("uri");
 
         this.requestSpecification = new RequestSpecBuilder()
                 .setBaseUri(uri)
                 .setContentType(ContentType.JSON)
                 .setRelaxedHTTPSValidation()
-                .setConfig(config)
                 .build();
     }
 
