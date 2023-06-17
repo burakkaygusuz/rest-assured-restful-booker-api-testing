@@ -9,11 +9,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import net.datafaker.Faker;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +20,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @Feature("Request Tests")
 @DisplayName("Request Tests")
-@TestMethodOrder(OrderAnnotation.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RequestTests extends BaseTest {
 
     private final Faker faker = new Faker();

@@ -21,27 +21,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Epic("Restful-Booker API Test Suite")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BaseTest {
 
     protected final Properties props = PropertyUtils.getInstance().loadProperties("app.properties");
     protected String token;
 
-    public BaseTest() {
+    @BeforeAll
+    @Order(1)
+    @DisplayName("Health Check")
+    @Description("A simple health check endpoint to confirm whether the API is up and running")
+    void healthCheck() {
         LogConfig logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
-        RestAssuredConfig config = RestAssuredConfig.config().logConfig(logConfig);
-        RestAssured.config = config;
-
+        RestAssured.config = RestAssuredConfig.config().logConfig(logConfig);
         RestAssured.requestSpecification = new RequestSpecBuilder()
                 .setBaseUri(props.getProperty("uri"))
                 .setContentType(ContentType.JSON)
                 .setRelaxedHTTPSValidation()
                 .build();
-    }
 
-    @BeforeAll
-    @DisplayName("Health Check")
-    @Description("A simple health check endpoint to confirm whether the API is up and running")
-    void healthCheck() {
         Response response = given()
                 .when()
                 .get("/ping")
@@ -53,7 +51,8 @@ public class BaseTest {
                 .isEqualTo(201);
     }
 
-    @BeforeEach
+    @BeforeAll
+    @Order(2)
     @DisplayName("Create a new token")
     @Description("Creates a new auth token to use for access to the PUT and DELETE /booking")
     void createToken() {
@@ -77,7 +76,7 @@ public class BaseTest {
                 .isInstanceOf(String.class);
     }
 
-    @AfterEach
+    @AfterAll
     void tearDown() {
         RestAssured.reset();
     }
