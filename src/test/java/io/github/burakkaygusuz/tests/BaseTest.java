@@ -12,7 +12,6 @@ import io.restassured.config.RestAssuredConfig;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 
 import java.util.Properties;
@@ -25,17 +24,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BaseTest {
 
     protected final Properties props = PropertyUtils.getInstance().loadProperties("app.properties");
-    protected final RequestSpecification requestSpecification;
     protected String token;
 
     public BaseTest() {
         LogConfig logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
         RestAssuredConfig config = RestAssuredConfig.config().logConfig(logConfig);
         RestAssured.config = config;
-        String uri = props.getProperty("uri");
 
-        this.requestSpecification = new RequestSpecBuilder()
-                .setBaseUri(uri)
+        RestAssured.requestSpecification = new RequestSpecBuilder()
+                .setBaseUri(props.getProperty("uri"))
                 .setContentType(ContentType.JSON)
                 .setRelaxedHTTPSValidation()
                 .build();
@@ -46,7 +43,6 @@ public class BaseTest {
     @Description("A simple health check endpoint to confirm whether the API is up and running")
     void healthCheck() {
         Response response = given()
-                .spec(requestSpecification)
                 .when()
                 .get("/ping")
                 .then()
@@ -68,7 +64,6 @@ public class BaseTest {
                 .put("password", password);
 
         token = given()
-                .spec(requestSpecification)
                 .body(objectNode)
                 .when()
                 .post("/auth")

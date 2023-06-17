@@ -47,7 +47,6 @@ public class RequestTests extends BaseTest {
                 "Breakfast");
 
         Response response = given()
-                .spec(requestSpecification)
                 .body(booking)
                 .when()
                 .post("/booking")
@@ -78,7 +77,6 @@ public class RequestTests extends BaseTest {
                 "Dinner");
 
         Response response = given()
-                .spec(requestSpecification)
                 .body(booking)
                 .accept("application/json")
                 .when()
@@ -108,7 +106,6 @@ public class RequestTests extends BaseTest {
         node.put("lastname", randomLastName);
 
         Response response = given()
-                .spec(requestSpecification)
                 .body(node)
                 .accept("application/json")
                 .when()
@@ -131,7 +128,6 @@ public class RequestTests extends BaseTest {
     @Story("Get Booking")
     void getBookingById() {
         Response response = given()
-                .spec(requestSpecification)
                 .when()
                 .get("/booking/" + bookingId)
                 .then()
@@ -151,7 +147,6 @@ public class RequestTests extends BaseTest {
     @Story("Get Booking")
     void getBookingByFirstNameAndLastName() {
         Response response = given()
-                .spec(requestSpecification)
                 .queryParam("firstname", randomFirstName)
                 .queryParam("lastname", randomLastName)
                 .when()
@@ -175,7 +170,6 @@ public class RequestTests extends BaseTest {
     @Story("Delete Booking")
     void deleteBookingById() {
         Response response = given()
-                .spec(requestSpecification)
                 .accept("application/json")
                 .when()
                 .header("Cookie", "token=" + token)
