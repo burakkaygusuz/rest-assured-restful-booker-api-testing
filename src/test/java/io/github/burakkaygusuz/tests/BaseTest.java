@@ -2,7 +2,7 @@ package io.github.burakkaygusuz.tests;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.github.burakkaygusuz.utils.PropertyUtils;
+import io.github.burakkaygusuz.utils.PropertyUtil;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.restassured.RestAssured;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BaseTest {
 
-    protected final Properties props = PropertyUtils.getInstance().loadProperties("app.properties");
+    protected final PropertyUtil props = PropertyUtil.getInstance("app.properties");
     protected String token;
 
     @BeforeAll
