@@ -25,8 +25,8 @@
         <allure.version>2.24.0</allure.version>
         <assertj-core.version>3.24.2</assertj-core.version>
         <datafaker.version>2.0.2</datafaker.version>
-        <jackson-databind.version>2.15.3</jackson-databind.version>
-        <jackson-dataformat-yaml.version>2.15.3</jackson-dataformat-yaml.version>
+        <jackson-databind.version>2.16.0</jackson-databind.version>
+        <jackson-dataformat-yaml.version>2.16.0</jackson-dataformat-yaml.version>
         <junit-jupiter.version>5.10.1</junit-jupiter.version>
         <junit-platform-engine.version>1.10.1</junit-platform-engine.version>
         <rest-assured.version>5.3.2</rest-assured.version>
