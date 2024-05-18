@@ -2,9 +2,9 @@ name: Rest Assured Restful Booker API Testing
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
@@ -12,20 +12,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 21
-        uses: oracle-actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          website: jdk.java.net
-          release: 21
-          version: latest
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
+
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots clean compile
+        run: mvn -B package --file pom.xml
+
       - name: Run the tests
         run: mvn test
