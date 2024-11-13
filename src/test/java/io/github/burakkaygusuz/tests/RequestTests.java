@@ -21,7 +21,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @Feature("Request Tests")
 @DisplayName("Request Tests")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class RequestTests extends BaseTest {
+class RequestTests extends BaseTest {
 
     private final Faker faker = new Faker();
     private final String randomFirstName = faker.name().firstName();
@@ -68,8 +68,8 @@ public class RequestTests extends BaseTest {
                 faker.name().lastName(),
                 faker.number().numberBetween(100, 1000),
                 false,
-                new BookingDates(faker.date().future(1, TimeUnit.DAYS, "YYYY-MM-dd"),
-                        faker.date().future(2, TimeUnit.DAYS, "YYYY-MM-dd")),
+                new BookingDates(faker.timeAndDate().future(1, TimeUnit.DAYS, "YYYY-MM-dd"),
+                        faker.timeAndDate().future(2, TimeUnit.DAYS, "YYYY-MM-dd")),
                 "Dinner");
 
         Response response = given()
