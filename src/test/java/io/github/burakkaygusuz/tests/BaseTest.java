@@ -7,6 +7,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.config.HttpClientConfig;
 import io.restassured.config.LogConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.filter.log.LogDetail;
@@ -14,6 +15,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
 
+import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,60 +24,76 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BaseTest {
 
-    protected final PropertyUtil props = PropertyUtil.getInstance("app.properties");
-    protected String token;
+  protected final PropertyUtil props = PropertyUtil.getInstance("app.properties");
+  protected String token;
 
-    @BeforeAll
-    @Order(1)
-    @DisplayName("Health Check")
-    @Description("A simple health check endpoint to confirm whether the API is up and running")
-    void healthCheck() {
-        LogConfig logConfig = LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
-        RestAssured.config = RestAssuredConfig.config().logConfig(logConfig);
-        RestAssured.requestSpecification = new RequestSpecBuilder()
-                .setBaseUri(props.getProperty("uri"))
-                .setContentType(ContentType.JSON)
-                .setRelaxedHTTPSValidation()
-                .build();
+  @BeforeAll
+  @Order(1)
+  @DisplayName("Health Check")
+  @Description("A simple health check endpoint to confirm whether the API is up and running")
+  void healthCheck() {
 
-        Response response = given()
-                .when()
-                .get("/ping")
-                .then()
-                .extract().response();
+    initializeRestAssured();
 
-        assertThat(response.statusCode())
-                .as("Health check status")
-                .isEqualTo(201);
-    }
+    Response response = given()
+        .when()
+        .get("/ping")
+        .then()
+        .extract().response();
 
-    @BeforeAll
-    @Order(2)
-    @DisplayName("Create a new token")
-    @Description("Creates a new auth token to use for access to the PUT and DELETE /booking")
-    void createToken() {
-        String username = props.getProperty("username");
-        String password = props.getProperty("password");
-        final ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
-        objectNode.put("username", username)
-                .put("password", password);
+    assertThat(response.statusCode())
+        .as("Health check status")
+        .isEqualTo(201);
+  }
 
-        token = given()
-                .body(objectNode)
-                .when()
-                .post("/auth")
-                .then()
-                .statusCode(200)
-                .extract().path("token");
+  @BeforeAll
+  @Order(2)
+  @DisplayName("Create a new token")
+  @Description("Creates a new auth token to use for access to the PUT and DELETE /booking")
+  void createToken() {
+    String username = props.getProperty("username");
+    String password = props.getProperty("password");
+    final ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
+    objectNode.put("username", username)
+        .put("password", password);
 
-        assertThat(token)
-                .as("token")
-                .isNotEmpty()
-                .isInstanceOf(String.class);
-    }
+    token = given()
+        .body(objectNode)
+        .when()
+        .post("/auth")
+        .then()
+        .statusCode(200)
+        .extract().path("token");
 
-    @AfterAll
-    void tearDown() {
-        RestAssured.reset();
-    }
+    assertThat(token)
+        .as("token")
+        .isNotEmpty()
+        .isInstanceOf(String.class);
+  }
+
+  @AfterAll
+  void tearDown() {
+    RestAssured.reset();
+  }
+
+  private void initializeRestAssured() {
+    LogConfig logConfig = LogConfig.logConfig()
+        .enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
+
+    HttpClientConfig httpClientConfig = HttpClientConfig.httpClientConfig()
+        .setParam("http.socket.timeout", 5000)
+        .setParam("http.connection.timeout", 5000);
+
+    RestAssured.config = RestAssuredConfig.config()
+        .logConfig(logConfig)
+        .httpClient(httpClientConfig);
+
+    RestAssured.requestSpecification = new RequestSpecBuilder()
+        .setBaseUri(props.getProperty("uri"))
+        .setContentType(ContentType.JSON)
+        .setConfig(config)
+        .setRelaxedHTTPSValidation()
+        .build();
+  }
+
 }
