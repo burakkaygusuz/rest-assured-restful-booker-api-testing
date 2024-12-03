@@ -1,7 +1,7 @@
 package io.github.burakkaygusuz.tests;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.github.burakkaygusuz.services.BookingService;
+import io.github.burakkaygusuz.services.BookingServiceImpl;
 import io.github.burakkaygusuz.utils.PropertyUtil;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -13,10 +13,10 @@ import io.restassured.config.RestAssuredConfig;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.config;
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Epic("Restful-Booker API Test Suite")
@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BaseTest {
 
   protected final PropertyUtil props = PropertyUtil.getInstance("app.properties");
+  protected BookingService bookingService;
   protected String token;
 
   @BeforeAll
@@ -33,13 +34,8 @@ public class BaseTest {
   @Description("A simple health check endpoint to confirm whether the API is up and running")
   void healthCheck() {
 
-    initializeRestAssured();
-
-    Response response = given()
-        .when()
-        .get("/ping")
-        .then()
-        .extract().response();
+    bookingService = new BookingServiceImpl(getRequestSpecification());
+    Response response = bookingService.healthCheck();
 
     assertThat(response.statusCode())
         .as("Health check status")
@@ -53,17 +49,8 @@ public class BaseTest {
   void createToken() {
     String username = props.getProperty("username");
     String password = props.getProperty("password");
-    final ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
-    objectNode.put("username", username)
-        .put("password", password);
 
-    token = given()
-        .body(objectNode)
-        .when()
-        .post("/auth")
-        .then()
-        .statusCode(200)
-        .extract().path("token");
+    token = bookingService.createAuthToken(username, password);
 
     assertThat(token)
         .as("token")
@@ -76,7 +63,7 @@ public class BaseTest {
     RestAssured.reset();
   }
 
-  private void initializeRestAssured() {
+  private RequestSpecification getRequestSpecification() {
     LogConfig logConfig = LogConfig.logConfig()
         .enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
 
@@ -88,7 +75,7 @@ public class BaseTest {
         .logConfig(logConfig)
         .httpClient(httpClientConfig);
 
-    RestAssured.requestSpecification = new RequestSpecBuilder()
+    return new RequestSpecBuilder()
         .setBaseUri(props.getProperty("uri"))
         .setContentType(ContentType.JSON)
         .setConfig(config)
