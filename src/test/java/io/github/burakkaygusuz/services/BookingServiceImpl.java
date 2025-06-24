@@ -12,15 +12,20 @@ import io.restassured.response.Response;
 public class BookingServiceImpl implements BookingService {
 
   private static final String BOOKING_ENDPOINT = "/booking";
+  private static final String AUTH_ENDPOINT = "/auth";
+  private static final String PING_ENDPOINT = "/ping";
   private final RequestSpecification requestSpec;
+
+  private RequestSpecification givenWithSpec() {
+    return RestAssured.given().spec(requestSpec);
+  }
 
   public BookingServiceImpl(RequestSpecification requestSpec) {
     this.requestSpec = requestSpec;
   }
 
   public Response createBooking(Booking booking) {
-    return RestAssured.given()
-        .spec(requestSpec)
+    return givenWithSpec()
         .body(booking)
         .when()
         .post(BOOKING_ENDPOINT)
@@ -30,8 +35,7 @@ public class BookingServiceImpl implements BookingService {
   }
 
   public Response updateBooking(int bookingId, Booking booking, String token) {
-    return RestAssured.given()
-        .spec(requestSpec)
+    return givenWithSpec()
         .body(booking)
         .header("Cookie", "token=" + token)
         .when()
@@ -42,8 +46,7 @@ public class BookingServiceImpl implements BookingService {
   }
 
   public Response partialUpdateBooking(int bookingId, ObjectNode updates, String token) {
-    return RestAssured.given()
-        .spec(requestSpec)
+    return givenWithSpec()
         .body(updates)
         .header("Cookie", "token=" + token)
         .when()
@@ -54,8 +57,7 @@ public class BookingServiceImpl implements BookingService {
   }
 
   public Response getBookingById(int bookingId) {
-    return RestAssured.given()
-        .spec(requestSpec)
+    return givenWithSpec()
         .when()
         .get(BOOKING_ENDPOINT + "/" + bookingId)
         .then()
@@ -64,8 +66,7 @@ public class BookingServiceImpl implements BookingService {
   }
 
   public Response getBookingByFirstNameAndLastName(String firstName, String lastName) {
-    return RestAssured.given()
-        .spec(requestSpec)
+    return givenWithSpec()
         .queryParam("firstname", firstName)
         .queryParam("lastname", lastName)
         .when()
@@ -76,8 +77,7 @@ public class BookingServiceImpl implements BookingService {
   }
 
   public Response deleteBooking(int bookingId, String token) {
-    return RestAssured.given()
-        .spec(requestSpec)
+    return givenWithSpec()
         .header("Cookie", "token=" + token)
         .when()
         .delete(BOOKING_ENDPOINT + "/" + bookingId)
@@ -87,8 +87,7 @@ public class BookingServiceImpl implements BookingService {
   }
 
   public Response getAllBookings() {
-    return RestAssured.given()
-        .spec(requestSpec)
+    return givenWithSpec()
         .when()
         .get(BOOKING_ENDPOINT)
         .then()
@@ -97,8 +96,7 @@ public class BookingServiceImpl implements BookingService {
   }
 
   public Response getBookingsByDate(String checkin, String checkout) {
-    return RestAssured.given()
-        .spec(requestSpec)
+    return givenWithSpec()
         .queryParam("checkin", checkin)
         .queryParam("checkout", checkout)
         .when()
@@ -113,11 +111,10 @@ public class BookingServiceImpl implements BookingService {
     objectNode.put("username", username)
         .put("password", password);
 
-    Response response = RestAssured.given()
-        .spec(requestSpec)
+    Response response = givenWithSpec()
         .body(objectNode)
         .when()
-        .post("/auth")
+        .post(AUTH_ENDPOINT)
         .then()
         .extract()
         .response();
@@ -126,10 +123,9 @@ public class BookingServiceImpl implements BookingService {
   }
 
   public Response healthCheck() {
-    return RestAssured.given()
-        .spec(requestSpec)
+    return givenWithSpec()
         .when()
-        .get("/ping")
+        .get(PING_ENDPOINT)
         .then()
         .extract()
         .response();
