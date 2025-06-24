@@ -15,7 +15,9 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.restassured.mapper.ObjectMapperType;
 import static io.restassured.RestAssured.config;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,6 +25,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BaseTest {
+
+  static {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new JavaTimeModule());
+    config = io.restassured.RestAssured.config().objectMapperConfig(
+        io.restassured.config.ObjectMapperConfig.objectMapperConfig()
+            .defaultObjectMapperType(ObjectMapperType.JACKSON_2)
+            .jackson2ObjectMapperFactory((cls, charset) -> objectMapper));
+  }
 
   protected final PropertyUtil props = PropertyUtil.getInstance("app.properties");
   protected BookingService bookingService;
