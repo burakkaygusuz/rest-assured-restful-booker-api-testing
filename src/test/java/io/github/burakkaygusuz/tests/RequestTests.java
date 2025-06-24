@@ -14,6 +14,8 @@ import org.junit.jupiter.api.*;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -39,7 +41,7 @@ class RequestTests extends BaseTest {
         "Doe",
         100,
         true,
-        new BookingDates("2020-01-01", "2020-01-02"),
+        new BookingDates(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 2)),
         "Breakfast");
 
     Response response = bookingService.createBooking(booking);
@@ -63,8 +65,11 @@ class RequestTests extends BaseTest {
         faker.name().lastName(),
         faker.number().numberBetween(100, 1000),
         false,
-        new BookingDates(faker.timeAndDate().future(1, TimeUnit.DAYS, "YYYY-MM-dd"),
-            faker.timeAndDate().future(2, TimeUnit.DAYS, "YYYY-MM-dd")),
+        new BookingDates(
+            LocalDate.parse(faker.timeAndDate().future(1, TimeUnit.DAYS, "yyyy-MM-dd"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+            LocalDate.parse(faker.timeAndDate().future(2, TimeUnit.DAYS, "yyyy-MM-dd"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
         "Dinner");
 
     Response response = bookingService.updateBooking(bookingId, booking, token);
