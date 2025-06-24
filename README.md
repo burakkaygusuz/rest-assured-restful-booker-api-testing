@@ -10,9 +10,9 @@ Make sure you have installed and configured the environment variables all the fo
 development machine:
 
 | OS      | JDK                            | Maven                 |
-|---------|--------------------------------|-----------------------|
-| Windows | `scoop install java/openjdk`   | `scoop install maven` |
-| macOS   | `brew install openjdk`         | `brew install maven`  |
+| ------- | ------------------------------ | --------------------- |
+| Windows | `scoop install java/openjdk21` | `scoop install maven` |
+| macOS   | `brew install openjdk@21`      | `brew install maven`  |
 
 ## Executing the Tests
 
